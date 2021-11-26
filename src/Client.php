@@ -52,4 +52,17 @@ class Client
         $content = $response->getBody()->getContents();
         return json_decode($content, true) ?? [];
     }
+
+    /**
+     * @return array
+     * @throws \Psr\Http\Client\ClientExceptionInterface
+     */
+    public function createOrder(CreateOrderArguments $arguments): array
+    {
+        $response = $this->httpClient->sendRequest(new CreateOrderRequest($this->mode, $this->authentication,
+                                                                          $arguments));
+
+        $content = $response->getBody()->getContents();
+        return json_decode($content, true) ?? [];
+    }
 }

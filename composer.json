@@ -22,5 +22,8 @@
         "psr-4": {
             "Stellion\\Test\\Vidaxl\\": "tests/"
         }
+    },
+    "require-dev": {
+        "jetbrains/phpstorm-attributes": "^1.0"
     }
 }

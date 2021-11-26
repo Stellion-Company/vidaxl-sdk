@@ -4,11 +4,11 @@ declare(strict_types=1);
 namespace Stellion\Vidaxl\Request;
 
 use GuzzleHttp\Psr7\Request;
-use Stellion\Vidaxl\Arguments\GetOrderArguments;
+use Stellion\Vidaxl\Arguments\CreateOrderArguments;
 use Stellion\Vidaxl\AuthenticationInterface;
 use Stellion\Vidaxl\Mode;
 
-class GetOrderRequest extends Request implements RequestInterface
+class CreateOrderRequest extends Request implements RequestInterface
 {
     use RequestTrait;
 
@@ -22,20 +22,20 @@ class GetOrderRequest extends Request implements RequestInterface
      */
     private Mode $mode;
     /**
-     * @var \Stellion\Vidaxl\Arguments\GetOrderArguments
+     * @var \Stellion\Vidaxl\Arguments\CreateOrderArguments
      */
-    private GetOrderArguments $arguments;
+    private CreateOrderArguments $arguments;
 
     /**
      * @param \Stellion\Vidaxl\Mode $mode
      * @param \Stellion\Vidaxl\AuthenticationInterface $auth
-     * @param string|null $orderReference
+     * @param \Stellion\Vidaxl\Arguments\CreateOrderArguments $arguments
      * @param array $headers
      */
     public function __construct(
         Mode                    $mode,
         AuthenticationInterface $auth,
-        ?string                 $orderReference = null,
+        CreateOrderArguments    $arguments,
         array                   $headers = []
     )
     {
@@ -46,20 +46,14 @@ class GetOrderRequest extends Request implements RequestInterface
         $headers = $this->makeHeaders($headers);
 
         $uri = $this->makeUri();
+        $body = $this->makeBody();
 
-        parent::__construct($this->getHttpMethod(), $uri, $headers, version: self::VERSION);
+        parent::__construct($this->getHttpMethod(), $uri, $headers, body: $body, version: self::VERSION);
     }
 
-    public function getHttpMethod(): string
-    {
-        return 'GET';
-    }
-
-    public function getEndpoint(): string
-    {
-        return '/api_customer/orders';
-    }
-
+    /**
+     * @return \Stellion\Vidaxl\AuthenticationInterface
+     */
     public function getAuthentication(): AuthenticationInterface
     {
         return $this->auth;
@@ -74,10 +68,20 @@ class GetOrderRequest extends Request implements RequestInterface
     }
 
     /**
-     * @return \Stellion\Vidaxl\Arguments\GetOrderArguments
+     * @return \Stellion\Vidaxl\Arguments\CreateOrderArguments
      */
-    public function getArguments(): GetOrderArguments
+    public function getArguments(): CreateOrderArguments
     {
         return $this->arguments;
+    }
+
+    public function getHttpMethod(): string
+    {
+        return 'POST';
+    }
+
+    public function getEndpoint(): string
+    {
+        return '/api_customer/orders';
     }
 }
