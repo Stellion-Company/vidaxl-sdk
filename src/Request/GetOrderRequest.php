@@ -29,13 +29,13 @@ class GetOrderRequest extends Request implements RequestInterface
     /**
      * @param \Stellion\Vidaxl\Mode $mode
      * @param \Stellion\Vidaxl\AuthenticationInterface $auth
-     * @param string|null $orderReference
+     * @param \Stellion\Vidaxl\Arguments\GetOrderArguments $arguments
      * @param array $headers
      */
     public function __construct(
         Mode                    $mode,
         AuthenticationInterface $auth,
-        ?string                 $orderReference = null,
+        GetOrderArguments       $arguments,
         array                   $headers = []
     )
     {

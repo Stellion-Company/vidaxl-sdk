@@ -4,6 +4,9 @@ declare(strict_types=1);
 namespace Stellion\Vidaxl;
 
 use Psr\Http\Client\ClientInterface;
+use Stellion\Vidaxl\Arguments\CreateOrderArguments;
+use Stellion\Vidaxl\Arguments\GetOrderArguments;
+use Stellion\Vidaxl\Request\CreateOrderRequest;
 use Stellion\Vidaxl\Request\GetOrderRequest;
 
 class Client
@@ -32,13 +35,18 @@ class Client
         $this->mode = $mode;
     }
 
-    public function getOrder(string $orderReference)
+    /**
+     * @param \Stellion\Vidaxl\Arguments\GetOrderArguments $arguments
+     * @return array
+     * @throws \Psr\Http\Client\ClientExceptionInterface
+     */
+    public function getOrder(GetOrderArguments $arguments): array
     {
-        $response = $this->httpClient->sendRequest(new GetOrderRequest($this->mode, $this->authentication,
-                                                                       $orderReference));
+        $response = $this->httpClient->sendRequest(new GetOrderRequest($this->mode, $this->authentication, $arguments));
 
         $content = $response->getBody()->getContents();
-        return json_decode($content, true);
+
+        return json_decode($content, true) ?? [];
     }
 
     /**
@@ -47,7 +55,8 @@ class Client
      */
     public function getOrders(): array
     {
-        $response = $this->httpClient->sendRequest(new GetOrderRequest($this->mode, $this->authentication));
+        $response = $this->httpClient->sendRequest(new GetOrderRequest($this->mode, $this->authentication,
+                                                                       new GetOrderArguments()));
 
         $content = $response->getBody()->getContents();
         return json_decode($content, true) ?? [];
