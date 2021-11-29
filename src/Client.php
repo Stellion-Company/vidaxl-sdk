@@ -63,6 +63,7 @@ class Client
     }
 
     /**
+     * @param \Stellion\Vidaxl\Arguments\CreateOrderArguments $arguments
      * @return array
      * @throws \Psr\Http\Client\ClientExceptionInterface
      */

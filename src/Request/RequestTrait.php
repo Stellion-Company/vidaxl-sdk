@@ -41,7 +41,7 @@ trait RequestTrait
     public function makeBody(): ?string
     {
         if ($this->getHttpMethod() === 'POST') {
-            return json_encode($this->getArguments()->toArray()) ?? null;
+            return json_encode($this->getArguments()->toArray(), JSON_UNESCAPED_UNICODE) ?? null;
         }
         return null;
     }
